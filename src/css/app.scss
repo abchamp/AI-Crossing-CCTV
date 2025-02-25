@@ -1,0 +1,65 @@
+// app global css in SCSS form
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Your custom CSS below
+
+// Apply Poppins as the default font for English text
+body {
+  background: #f8fafc;
+  font-family: 'Poppins', 'IBM Plex Sans Thai', sans-serif;
+}
+
+// If you want to ensure Quasar components also use the font
+.q-drawer,
+.q-toolbar,
+.q-item__label {
+  font-family: 'Poppins', 'IBM Plex Sans Thai', sans-serif !important;
+}
+
+// Add global luxury styles
+.q-card {
+  background: linear-gradient(135deg, rgba(26, 35, 126, 0.02) 0%, rgba(48, 63, 159, 0.05) 100%);
+  border: 1px solid rgba(26, 35, 126, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+// Luxury button styles
+.q-btn {
+  &.q-btn--standard {
+    background: linear-gradient(135deg, #1a237e 0%, #303f9f 100%);
+    border: 1px solid rgba(26, 35, 126, 0.2);
+
+    &:hover {
+      box-shadow: 0 0 15px rgba(26, 35, 126, 0.2);
+    }
+  }
+}
+
+// Luxury input styles
+.q-field {
+  &.q-field--outlined {
+    .q-field__control {
+      border-color: rgba(26, 35, 126, 0.2);
+
+      &:hover {
+        border-color: rgba(26, 35, 126, 0.4);
+      }
+    }
+  }
+}
+
+// Add subtle primary accents to headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #0a1f1c;
+  text-shadow: 0 0 1px rgba(26, 35, 126, 0.1);
+}
+
+// Add this import at the top of the file
+@import './modern.scss';
