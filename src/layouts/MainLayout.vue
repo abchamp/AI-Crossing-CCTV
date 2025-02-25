@@ -64,7 +64,7 @@
     >
       <!-- Update Logo Section -->
       <div class="logo-section tw-flex tw-justify-center">
-        <img src="src/assets/Logo.png" alt="Logo" />
+        <img :src="WebLogo" alt="Logo" />
       </div>
 
       <!-- Navigation Menu -->
@@ -178,6 +178,7 @@ import {
   WrenchIcon,
   RectangleStackIcon,
 } from '@heroicons/vue/24/solid'
+const WebLogo = new URL('/src/assets/Logo.png', import.meta.url)
 
 const route = useRoute()
 const leftDrawerOpen = ref(true)
