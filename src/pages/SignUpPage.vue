@@ -4,7 +4,7 @@
       <!-- Logo and Header -->
       <div class="tw-text-center tw-mb-8">
         <div class="tw-flex tw-justify-center tw-mb-6">
-          <img src="src/assets/logo.png" alt="Logo" class="tw-h-12" />
+          <img src="src/assets/Logo.png" alt="Logo" class="tw-h-12" />
         </div>
         <h1 class="tw-text-2xl tw-font-bold tw-text-primary-text">Create Account</h1>
         <p class="tw-text-gray-500/80 tw-mt-1">Sign up to get started with CCTV management</p>

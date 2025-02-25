@@ -64,7 +64,7 @@
     >
       <!-- Update Logo Section -->
       <div class="logo-section tw-flex tw-justify-center">
-        <img src="src/assets/logo.png" alt="Logo" />
+        <img src="src/assets/Logo.png" alt="Logo" />
       </div>
 
       <!-- Navigation Menu -->
