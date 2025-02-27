@@ -22,6 +22,48 @@
         <!-- Spacer -->
         <q-space />
 
+        <!-- CCTV Controls - Only show on CCTV pages -->
+        <div v-if="isCCTVPage" class="tw-flex tw-items-center tw-gap-2">
+          <!-- Left Button (Routes) -->
+          <button
+            @click="toggleLeftColumn"
+            class="toggle-btn tw-flex tw-items-center tw-gap-2"
+            :class="{ 'is-active': showLeftColumn }"
+          >
+            <ChevronRightIcon
+              class="tw-w-4 tw-h-4 tw-transition-transform tw-duration-300"
+              :class="{ 'tw-rotate-180': showLeftColumn }"
+            />
+            <span class="tw-text-sm">Routes</span>
+          </button>
+
+          <!-- Grid Size Controls - Show only when both columns are hidden -->
+          <div class="tw-flex tw-gap-2">
+            <button
+              v-for="size in [2, 3, 4]"
+              :key="size"
+              @click="gridSize = size"
+              class="toggle-btn"
+              :class="{ 'is-active': gridSize === size }"
+            >
+              <span class="tw-text-sm">{{ size }}x</span>
+            </button>
+          </div>
+
+          <!-- Right Button (Map) -->
+          <button
+            @click="toggleRightColumn"
+            class="toggle-btn tw-flex tw-items-center tw-gap-2"
+            :class="{ 'is-active': showRightColumn }"
+          >
+            <span class="tw-text-sm">Map</span>
+            <ChevronRightIcon
+              class="tw-w-4 tw-h-4 tw-transition-transform tw-duration-300"
+              :class="{ 'tw-rotate-0': showRightColumn, 'tw-rotate-180': !showRightColumn }"
+            />
+          </button>
+        </div>
+
         <!-- Spacer -->
         <q-space />
 
@@ -164,7 +206,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   HomeIcon,
@@ -178,6 +220,7 @@ import {
   WrenchIcon,
   RectangleStackIcon,
 } from '@heroicons/vue/24/solid'
+import { ChevronRightIcon } from '@heroicons/vue/24/outline'
 const WebLogo = new URL('/src/assets/Logo.png', import.meta.url)
 
 const route = useRoute()
@@ -188,7 +231,29 @@ onMounted(() => {
   if (route.path === '/cctv' || route.path === '/train-driver') {
     leftDrawerOpen.value = false
   }
+
+  // Initialize CCTV column visibility
+  if (route.path === '/cctv' || route.path === '/set-up-cctv') {
+    showLeftColumn.value = true
+    showRightColumn.value = true
+  }
 })
+
+// Watch for route changes to close drawer when navigating to CCTV
+watch(
+  () => route.path,
+  (newPath) => {
+    if (newPath === '/cctv' || newPath === '/set-up-cctv') {
+      leftDrawerOpen.value = false
+
+      // Initialize CCTV column visibility if coming from a non-CCTV page
+      if (!isCCTVPage.value) {
+        showLeftColumn.value = true
+        showRightColumn.value = true
+      }
+    }
+  },
+)
 
 // Add computed property to check if current page is TrainDriverPage
 const isTrainDriverPage = computed(() => route.path === '/train-driver')
@@ -214,6 +279,32 @@ const currentPageTitle = computed(() => {
     default:
       return 'Page Not Found'
   }
+})
+
+// Add new state variables
+const showLeftColumn = ref(false)
+const showRightColumn = ref(false)
+const gridSize = ref(2)
+
+// Add new computed property
+const isCCTVPage = computed(() => route.path === '/cctv' || route.path === '/set-up-cctv')
+
+// Add new methods
+const toggleLeftColumn = () => {
+  showLeftColumn.value = !showLeftColumn.value
+}
+
+const toggleRightColumn = () => {
+  showRightColumn.value = !showRightColumn.value
+}
+
+// Provide CCTV state to child components
+provide('cctvState', {
+  showLeftColumn,
+  showRightColumn,
+  gridSize,
+  toggleLeftColumn,
+  toggleRightColumn,
 })
 </script>
 
@@ -294,6 +385,22 @@ const currentPageTitle = computed(() => {
       box-shadow: none;
       color: #64748b;
       transition: all 0.3s ease;
+    }
+  }
+
+  // Toggle button styles for CCTV controls
+  .toggle-btn {
+    @apply tw-flex tw-items-center tw-gap-2 tw-px-3 tw-py-1.5 tw-rounded-full
+           tw-bg-white/90 tw-backdrop-blur-sm tw-shadow-sm tw-border tw-border-gray-100
+           tw-text-gray-500 tw-transition-all tw-duration-300;
+
+    &:hover {
+      @apply tw-shadow-md tw-bg-white;
+    }
+
+    &.is-active {
+      @apply tw-bg-blue-50 tw-border-blue-200 tw-text-blue-600;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
     }
   }
 }
